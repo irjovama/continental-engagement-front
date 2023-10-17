@@ -1,35 +1,58 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
+import Home from "./home";
+import Questions from "./questions";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+} from "react-router-dom";
+import {  insomniaRequest } from "./store";
+import { Container } from "./common/container";
+import AdministrationPanel from "./admin-panel";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [token, setToken] = useState("");
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.href.split("?")[1]);
+    const newToken = params.get("token");
+    setToken(newToken);
+  }, []);
 
+  useEffect(() => {
+    if (token != "") {
+      insomniaRequest({
+        resourceName: "usersFindByToken",
+        customQuery: { token },
+      })
+        .then((u) => {
+          setUser(u);
+        })
+        .catch((err) => {
+          console.log(err);
+          setError("El link es incorrecto por favor revisalo");
+        });
+    }
+  }, [token]);
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {error ? (
+        <Container>{error}</Container>
+      ) : user ? (
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home user={user} />} />
+            <Route path={"questions"} element={<Questions user={user} />} />
+            <Route path={"administration-panel"} element={<AdministrationPanel user={user} />} />
+          </Routes>
+        </Router>
+      ) : (
+        "Loading..."
+      )}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
