@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import "./App.css";
 import Home from "./home";
@@ -7,14 +8,16 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-import {  insomniaRequest } from "./store";
 import { Container } from "./common/container";
 import AdministrationPanel from "./admin-panel";
+import getUserByToken from "./store/users/get-by-token";
+import FinishPage from "./finish";
 
 function App() {
   const [token, setToken] = useState("");
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.href.split("?")[1]);
     const newToken = params.get("token");
@@ -23,10 +26,7 @@ function App() {
 
   useEffect(() => {
     if (token != "") {
-      insomniaRequest({
-        resourceName: "usersFindByToken",
-        customQuery: { token },
-      })
+      getUserByToken(token)
         .then((u) => {
           setUser(u);
         })
@@ -40,12 +40,18 @@ function App() {
     <>
       {error ? (
         <Container>{error}</Container>
+      ) : user && user?.finishedAt ? (
+        <FinishPage user={user} />
       ) : user ? (
         <Router>
           <Routes>
             <Route path="/" element={<Home user={user} />} />
             <Route path={"questions"} element={<Questions user={user} />} />
-            <Route path={"administration-panel"} element={<AdministrationPanel user={user} />} />
+            <Route path={"finish"} element={<FinishPage user={user} />} />
+            <Route
+              path={"administration-panel"}
+              element={<AdministrationPanel user={user} />}
+            />
           </Routes>
         </Router>
       ) : (

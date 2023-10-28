@@ -1,6 +1,8 @@
+"use client";
 import { useEffect, useState } from "react";
-import { insomniaRequest } from "../store";
-import styled from "styled-components";
+import { styled } from "styled-components";
+import createResult from "../store/results/create";
+import updateResult from "../store/results/update";
 const QuestionContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -24,8 +26,23 @@ const CircleButton = styled.button`
   justify-content: center;
   border-color: rgba(122, 0, 198, 1);
 `;
+
+const TextArea = styled.textarea`
+  width: 100%;
+  height: 100px;
+`;
+
+const TextButton = styled.button`
+  border-radius: 10px;
+  max-width: 200px;
+  min-height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-color: rgba(122, 0, 198, 1);
+`;
 export default function ScaleReactive({ data }) {
-  const [scale, setScale] = useState([]);
   const [selected, setSelected] = useState(
     data.results.length > 0 && data.results[0].value
   );
@@ -35,39 +52,27 @@ export default function ScaleReactive({ data }) {
   const [pending, setPending] = useState(false);
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    const newScale = [];
-    for (let i = data.minRange; i <= data.maxRange; i++) {
-      newScale.push(i);
-    }
-    setScale(newScale);
     setReady(true);
   }, []);
 
   useEffect(() => {
     if (selected && ready) {
       setPending(true);
-      const resourceName = resultId != "" ? "resultsUpdate" : "resultsCreate";
-      const customBody =
-        resultId != ""
-          ? { value: selected }
-          : { token: data.token, value: selected };
-      insomniaRequest({
-        resourceName,
-        customParameters: {
-          categoryId: data.categoryId,
-          questionId: data.id,
-          resultId,
-        },
-        customBody,
-      })
-        .then((response) => {
-          setPending(false);
-          if (!resultId) {
+      if (resultId != "") {
+        updateResult(data.categoryId, data.id, resultId, selected).then(
+          (response) => {
+            setPending(false);
+          }
+        );
+      } else {
+        createResult(data.categoryId, data.id, data.token, selected).then(
+          (response) => {
+            setPending(false);
             setResultId(response.id);
             data.setTotalAnswers(data.totalAnswers + 1);
           }
-        })
-        .catch((err) => console.log(err.message));
+        );
+      }
     }
   }, [selected]);
   return (
@@ -76,20 +81,43 @@ export default function ScaleReactive({ data }) {
         {data.index} - {data.content}
       </span>
       <ButtonContainer>
-        {scale.map((s) => {
-          return (
-            <CircleButton
-              disabled={pending}
-              key={s}
-              style={
-                selected == s ? { background: "#7A00C6", color: "white" } : {}
-              }
-              onClick={(e) => setSelected(s)}
-            >
-              {s}
-            </CircleButton>
-          );
-        })}
+        {data.options.length == 0 ? (
+          <TextArea
+            defaultValue={selected ? selected : ""}
+            disabled={pending}
+            onBlur={(e) => setSelected(e.target.value)}
+          ></TextArea>
+        ) : (
+          data.options.map((o) => {
+            return [1, 2, 3, 4, 5, 6, 7, 8, 9].includes(parseInt(o.value)) ? (
+              <CircleButton
+                disabled={pending}
+                key={o.id}
+                style={
+                  selected == o.value
+                    ? { background: "#7A00C6", color: "white" }
+                    : {}
+                }
+                onClick={(e) => setSelected(o.value)}
+              >
+                {o.label}
+              </CircleButton>
+            ) : (
+              <TextButton
+                disabled={pending}
+                key={o.id}
+                style={
+                  selected == o.value
+                    ? { background: "#7A00C6", color: "white" }
+                    : {}
+                }
+                onClick={(e) => setSelected(o.value)}
+              >
+                {o.label}
+              </TextButton>
+            );
+          })
+        )}
       </ButtonContainer>
     </QuestionContainer>
   );
