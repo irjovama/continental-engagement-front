@@ -93,7 +93,7 @@ function Home({ user }) {
           </div>
         </Container>
       </Content>
-      {selected != "" && totalAnswers == 2 && (
+      {selected != "" && totalAnswers >= 2 && (
         <PrimaryButton
           onClick={(e) => {
             e.target.disabled = true;
