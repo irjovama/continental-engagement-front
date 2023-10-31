@@ -53,10 +53,7 @@ function Questions2({ user }) {
             Terminar
           </PrimaryButton>
         </div>
-        <div>
-          En una escala del 1 al 7, donde 1 es totalmente en desacuerdo y 7 es
-          totalmente de acuerdo, marque las siguientes afirmaciones
-        </div>
+        
       </TopFixed>
       <Container>
         <div style={{ marginTop: "100px" }}>
