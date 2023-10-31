@@ -5,11 +5,27 @@ import { useEffect, useState } from "react";
 import { Content, H1 } from "./common/text";
 import { useNavigate } from "react-router-dom";
 import updateUser from "./store/users/update";
+import Reactive from "./common/reactive";
+import showCategoriesByUser from "./store/categories/show-by-user";
 function Home({ user }) {
+  const [categories, setCategories] = useState([]);
+  const [totalAnswers, setTotalAnswers] = useState(0);
   const [token, setToken] = useState("");
   const [selected, setSelected] = useState("");
   const navigate = useNavigate();
-
+  let num = 1;
+  useEffect(() => {
+    showCategoriesByUser(user.token).then((response) => {
+      setCategories(response.data.filter((c) => c.name == "home"));
+      const questions = response.data
+        .map((category) => category.questions)
+        .reduce((accumulator, currentArray) => {
+          return accumulator.concat(currentArray);
+        }, []);
+      const answers = questions.filter((q) => q.results.length > 0);
+      setTotalAnswers(answers.length);
+    });
+  }, []);
   const modalities = [
     {
       name: "presencial",
@@ -37,6 +53,7 @@ function Home({ user }) {
         pedimos que por favor la completes con la mayor sinceridad posible. No
         hay respuestas correctas ni incorrectas, tus apreciaciones nos serán muy
         útiles para seguir mejorando. ¡Contamos con tu participación!
+        <hr></hr>
         <div>
           Selecciona una modalidad de trabajo
           <ul>
@@ -56,8 +73,27 @@ function Home({ user }) {
             })}
           </ul>
         </div>
+        <Container>
+          <div style={{ marginTop: "100px" }}>
+            {categories.length == 0 ? (
+              <div>Loading...</div>
+            ) : (
+              categories.map((category) => {
+                return category.questions.map((question) => {
+                  question.index = num;
+                  question.categoryId = category.id;
+                  question.token = user.token;
+                  question.setTotalAnswers = setTotalAnswers;
+                  question.totalAnswers = totalAnswers;
+                  num++;
+                  return <Reactive data={question} key={question.id} />;
+                });
+              })
+            )}
+          </div>
+        </Container>
       </Content>
-      {selected != "" && (
+      {selected != "" && totalAnswers == 2 && (
         <PrimaryButton
           onClick={(e) => {
             e.target.disabled = true;
@@ -66,7 +102,7 @@ function Home({ user }) {
             });
           }}
         >
-          Comenzar
+          Continuar
         </PrimaryButton>
       )}
     </Container>

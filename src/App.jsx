@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Home from "./home";
 import Questions from "./questions";
+import Questions2 from "./questions2";
 import {
   BrowserRouter as Router,
   Route,
@@ -47,6 +48,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home user={user} />} />
             <Route path={"questions"} element={<Questions user={user} />} />
+            <Route path={"questions2"} element={<Questions2 user={user} />} />
             <Route path={"finish"} element={<FinishPage user={user} />} />
             <Route
               path={"administration-panel"}

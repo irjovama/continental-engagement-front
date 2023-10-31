@@ -8,7 +8,7 @@ import showCategoriesByUser from "./store/categories/show-by-user";
 import { useNavigate } from "react-router-dom";
 import updateUser from "./store/users/update";
 
-function Questions({ user }) {
+function Questions2({ user }) {
   const [categories, setCategories] = useState([]);
   const [totalAnswers, setTotalAnswers] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
@@ -17,9 +17,7 @@ function Questions({ user }) {
   useEffect(() => {
     showCategoriesByUser(user.token).then((response) => {
       setCategories(
-        response.data.filter(
-          (c) => !["home", "Preguntas de cierre"].includes(c.name)
-        )
+        response.data.filter((c) => ["Preguntas de cierre"].includes(c.name))
       );
       const questions = response.data
         .map((category) => category.questions)
@@ -36,7 +34,7 @@ function Questions({ user }) {
 
   if (progressValue >= 100) {
     updateUser(user.id, { finishedAt: true }).then((s) => {
-      navigate("/finish?token=" + user.token);
+      
     });
   }
   return (
@@ -47,13 +45,12 @@ function Questions({ user }) {
             <progress id="file" max="100" value={progressValue} />
           </div>
           <PrimaryButton
-            disabled={progressValue < 84}
+            disabled={progressValue < 100}
             onClick={() => {
-              // console.log(progressValue)
-              navigate("/questions2?token=" + user.token);
+              navigate("/finish?token=" + user.token);
             }}
           >
-            Continuar
+            Terminar
           </PrimaryButton>
         </div>
         <div>
@@ -84,4 +81,4 @@ function Questions({ user }) {
   );
 }
 
-export default Questions;
+export default Questions2;
