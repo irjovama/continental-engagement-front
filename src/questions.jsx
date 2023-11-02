@@ -49,7 +49,6 @@ function Questions({ user }) {
           <PrimaryButton
             disabled={progressValue < 84}
             onClick={() => {
-              // console.log(progressValue)
               navigate("/questions2?token=" + user.token);
             }}
           >

@@ -21,6 +21,6 @@ export default async function updateResult(
     },
     data: { value },
   };
-
+console.log(options);
   return tryRequest(options);
 }
