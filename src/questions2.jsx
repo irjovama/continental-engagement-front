@@ -41,9 +41,7 @@ function Questions2({ user }) {
     <>
       <TopFixed>
         <div id="top">
-          {totalAnswers}{" "}
-          {totalQuestions}{" "}
-          {progressValue}
+
           <div>
             <progress id="file" max="100" value={progressValue} />
           </div>
