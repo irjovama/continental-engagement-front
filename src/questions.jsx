@@ -47,7 +47,7 @@ function Questions({ user }) {
             <progress id="file" max="100" value={progressValue} />
           </div>
           <PrimaryButton
-            disabled={progressValue < 84}
+            disabled={progressValue < 70}
             onClick={() => {
               navigate("/questions2?token=" + user.token);
             }}

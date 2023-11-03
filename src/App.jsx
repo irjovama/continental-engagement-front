@@ -13,6 +13,7 @@ import { Container } from "./common/container";
 import AdministrationPanel from "./admin-panel";
 import getUserByToken from "./store/users/get-by-token";
 import FinishPage from "./finish";
+import ReciboPage from "./recibo";
 
 function App() {
   const [token, setToken] = useState("");
@@ -50,6 +51,7 @@ function App() {
             <Route path={"questions"} element={<Questions user={user} />} />
             <Route path={"questions2"} element={<Questions2 user={user} />} />
             <Route path={"finish"} element={<FinishPage user={user} />} />
+            <Route path={"recibo"} element={<ReciboPage user={user} />} />
             <Route
               path={"administration-panel"}
               element={<AdministrationPanel user={user} />}

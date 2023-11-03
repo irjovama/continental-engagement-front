@@ -24,7 +24,7 @@ function Questions2({ user }) {
         .reduce((accumulator, currentArray) => {
           return accumulator.concat(currentArray);
         }, []);
-      setTotalQuestions(questions.length);
+      setTotalQuestions(questions.length - 1);
       const answers = questions.filter((q) => q.results.length > 0);
       setTotalAnswers(answers.length);
     });
@@ -41,6 +41,9 @@ function Questions2({ user }) {
     <>
       <TopFixed>
         <div id="top">
+          {totalAnswers}{" "}
+          {totalQuestions}{" "}
+          {progressValue}
           <div>
             <progress id="file" max="100" value={progressValue} />
           </div>
