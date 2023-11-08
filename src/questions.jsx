@@ -48,7 +48,13 @@ function Questions({ user }) {
   return (
     <>
       <TopFixed>
-        <ProgressBar totalItems={totalQuestions} answers={totalAnswers} />
+        <ProgressBar
+          totalItems={totalQuestions}
+          answers={totalAnswers}
+          text={`Considerando tu experiencia en los últimos 06 meses. En una escala del
+          1 al 7, donde 1 es totalmente en desacuerdo y 7 es totalmente de
+          acuerdo, marque las siguientes afirmaciones:`}
+        />
         <PrimaryButton
           disabled={totalAnswers < 22}
           onClick={(e) => {
@@ -72,7 +78,7 @@ function Questions({ user }) {
                 question.token = user.token;
                 question.setTotalAnswers = setTotalAnswers;
                 question.totalAnswers = totalAnswers;
-                
+
                 num++;
                 return (
                   <Reactive data={question} key={question.id} index={num} />

@@ -32,6 +32,19 @@ export default function ExportPage() {
             { header: "Correo", key: "email" },
             { header: "Modalidad", key: "modality" },
             { header: "Terminado", key: "finishedAt" },
+            { header: "Unidad de negocio", key: "unidadDeNegocio" },
+            { header: "Area de trabajo", key: "areaDeTrabajo" },
+            { header: "Sub area de trabajo", key: "subAreaDeTrabajo" },
+            { header: "Ubicación fisica", key: "ubicacionFisica" },
+            { header: "Local", key: "local" },
+            { header: "Naturaleza del puesto", key: "naturalezaDelPuesto" },
+            {
+              header: "Grupo ocupacional nivel 2",
+              key: "grupoOcupacionalNivel2",
+            },
+            { header: "Años en la organización", key: "anosEnLaOrganizacion" },
+            { header: "Edad", key: "edad" },
+            { header: "Generación", key: "generacion" },
           ];
 
           let questions = [];

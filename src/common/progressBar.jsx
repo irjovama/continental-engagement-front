@@ -37,7 +37,7 @@ const DivLine = styled.div`
     font-weight: 600;
   }
 `;
-export default function ProgressBar({ totalItems, answers }) {
+export default function ProgressBar({ totalItems, answers, text }) {
   const value = (answers / totalItems) * 100;
 
   return (
@@ -54,6 +54,7 @@ export default function ProgressBar({ totalItems, answers }) {
       </DivLine>
       <BackgroundBar />
       <FrontBar width={value + "%"} />
+      <div>{text}</div>
     </BarContainer>
   );
 }
