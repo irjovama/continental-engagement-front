@@ -1,0 +1,9 @@
+@font-face {
+  font-family: "NeuePlak";
+  src: url("../public/fonts/Neue\ Plak\ Text\ Black.ttf") format("ttf");
+  /* Puedes especificar otros atributos de fuente, como weight y style, si es necesario */
+}
+
+#root {
+  font-family: "NeuePlak", sans-serif;
+}

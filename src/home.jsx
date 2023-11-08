@@ -1,112 +1,105 @@
-import "./App.css";
+"use client";
+import Logo1 from "./assets/logo1.svg";
+import Arrows from "./assets/arrows.svg";
+import styled from "styled-components";
 import { PrimaryButton } from "./common/buttons";
-import { Container } from "./common/container";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Content, H1 } from "./common/text";
-import { useNavigate } from "react-router-dom";
-import updateUser from "./store/users/update";
-import Reactive from "./common/reactive";
-import showCategoriesByUser from "./store/categories/show-by-user";
-function Home({ user }) {
-  const [categories, setCategories] = useState([]);
-  const [totalAnswers, setTotalAnswers] = useState(0);
+const TopArrows = styled.img`
+  position: relative;
+  top: -50px;
+  left: 0px;
+`;
+
+const BottomArrows = styled.img`
+  position: relative;
+  bottom: -70vh;
+  right: -100px;
+`;
+
+const ArrowContainer = styled.div`
+  display: absolute;
+  top: 0xp;
+  left: 0px;
+  width: 100%;
+  height: 90vh;
+  z-index: -1;
+`;
+const Container = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+  width: 100%;
+  gap: 2rem;
+  color: #7a00c6;
+`;
+const Title = styled.div`
+  font-family: Neue Plak;
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 43px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: #7a00c6;
+  & div {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 28.8px;
+  }
+`;
+const LeftPanel = styled.div`
+  display: flex;
+`;
+const RightPanel = styled.div`
+  width: 400px;
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+`;
+export default function HomePage({ user }) {
   const [token, setToken] = useState("");
-  const [selected, setSelected] = useState("");
-  const navigate = useNavigate();
-  let num = 1;
-  useEffect(() => {
-    showCategoriesByUser(user.token).then((response) => {
-      setCategories(response.data.filter((c) => c.name == "home"));
-      const questions = response.data
-        .map((category) => category.questions)
-        .reduce((accumulator, currentArray) => {
-          return accumulator.concat(currentArray);
-        }, []);
-      const answers = questions.filter((q) => q.results.length > 0);
-      setTotalAnswers(answers.length);
-    });
-  }, []);
-  const modalities = [
-    {
-      name: "presencial",
-      label: "Presencial (Asisto todos los días al campus)",
-    },
-    {
-      name: "hibrido",
-      label: "Híbrido (Asisto de 2 a 3 veces a la semana al campus)",
-    },
-    {
-      name: "remoto",
-      label: "Remoto (Asisto a requerimiento al campus)",
-    },
-  ];
   useEffect(() => {
     setToken(user?.token && user.token);
   }, [user?.token]);
   return (
-    <Container>
-      <H1>Encuesta Engagement 2023 -2</H1>
-      <Content>
-        Hola! Como parte de nuestra apuesta por mejorar, queremos conocer cómo
-        estás viviendo tu relación con la organización. Esta encuesta te tomará
-        menos de 3 minutos y es <strong>completamente anónima</strong>. Te
-        pedimos que por favor la completes con la mayor sinceridad posible. No
-        hay respuestas correctas ni incorrectas, tus apreciaciones nos serán muy
-        útiles para seguir mejorando. ¡Contamos con tu participación!
-        <hr></hr>
-        <div>
-          Selecciona una modalidad de trabajo
-          <ul>
-            {modalities.map((m) => {
-              return (
-                <li key={m.name}>
-                  <input
-                    id={m.name}
-                    type="radio"
-                    name="modalidad"
-                    value={m.name}
-                    onChange={(e) => setSelected(e.target.value)}
-                  />
-                  <label htmlFor={m.name}>{m.label}</label>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <Container>
-          <div style={{ marginTop: "100px" }}>
-            {categories.length == 0 ? (
-              <div>Loading...</div>
-            ) : (
-              categories.map((category) => {
-                return category.questions.map((question) => {
-                  question.index = num;
-                  question.categoryId = category.id;
-                  question.token = user.token;
-                  question.setTotalAnswers = setTotalAnswers;
-                  question.totalAnswers = totalAnswers;
-                  num++;
-                  return <Reactive data={question} key={question.id} />;
-                });
-              })
-            )}
-          </div>
-        </Container>
-      </Content>
-      {selected != "" && totalAnswers >= 2 && (
-        <PrimaryButton
-          onClick={(e) => {
-            e.target.disabled = true;
-            updateUser(user.id, { modality: selected }).then((response) => {
-              navigate("/questions?token=" + token);
-            });
-          }}
-        >
-          Continuar
-        </PrimaryButton>
-      )}
-    </Container>
+    <div>
+      <Container>
+        <LeftPanel>
+          <Title>
+            <div>Encuesta de</div>
+            <span>Engagement</span>
+            <div>
+              <img src={Arrows} width={"50px"} />
+            </div>
+          </Title>
+        </LeftPanel>
+        <RightPanel>
+          <Title>¡Hola!</Title>
+          <p>
+            Como parte de nuestra apuesta por mejorar, queremos conocer cómo
+            estás viviendo tu relación con la organización. Esta encuesta te
+            tomará menos de 3 minutos y es completamente anónima.
+          </p>
+
+          <p>
+            Te pedimos que por favor la completes con la mayor sinceridad
+            posible. No hay respuestas correctas ni incorrectas, tus
+            apreciaciones nos serán muy útiles para seguir mejorando.
+          </p>
+
+          <p>
+            <strong>¡Contamos con tu participación!</strong>
+          </p>
+          <Link to={"/questions/0?token=" + token}>
+            <PrimaryButton>Continuar</PrimaryButton>
+          </Link>
+        </RightPanel>
+      </Container>
+      <ArrowContainer>
+        <TopArrows src={Arrows} /> <BottomArrows src={Arrows} />
+      </ArrowContainer>
+    </div>
   );
 }
-
-export default Home;

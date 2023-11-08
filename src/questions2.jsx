@@ -7,11 +7,13 @@ import { TopFixed } from "./common/top-fixed";
 import showCategoriesByUser from "./store/categories/show-by-user";
 import { useNavigate } from "react-router-dom";
 import updateUser from "./store/users/update";
+import ProgressBar from "./common/progressBar";
 
 function Questions2({ user }) {
   const [categories, setCategories] = useState([]);
   const [totalAnswers, setTotalAnswers] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
+  const [globalSelected, setGlobalSelected] = useState();
   const navigate = useNavigate();
   let num = 1;
   useEffect(() => {
@@ -24,9 +26,14 @@ function Questions2({ user }) {
         .reduce((accumulator, currentArray) => {
           return accumulator.concat(currentArray);
         }, []);
-      setTotalQuestions(questions.length - 1);
-      const answers = questions.filter((q) => q.results.length > 0);
-      setTotalAnswers(answers.length);
+      setTotalQuestions(questions.length - 5);
+      const answers = questions.filter((q) => {
+        const multiple =
+          q?.options.length > 0 &&
+          q.options[0].group.split("-")[0] == "multiple";
+        return !multiple && q.results.length > 0;
+      });
+      setTotalAnswers(answers.length + 1);
     });
   }, []);
   const progressValue =
@@ -34,30 +41,27 @@ function Questions2({ user }) {
 
   if (progressValue >= 100) {
     updateUser(user.id, { finishedAt: true }).then((s) => {
-      
+      navigate("/finish?token=" + user.token);
     });
   }
+
   return (
     <>
       <TopFixed>
-        <div id="top">
+        <ProgressBar totalItems={totalQuestions} answers={totalAnswers} />
+        <PrimaryButton
+          disabled={totalAnswers < 25}
+          onClick={(e) => {
+            e.target.disabled = true;
 
-          <div>
-            <progress id="file" max="100" value={progressValue} />
-          </div>
-          <PrimaryButton
-            disabled={progressValue < 100}
-            onClick={() => {
-              navigate("/finish?token=" + user.token);
-            }}
-          >
-            Terminar
-          </PrimaryButton>
-        </div>
-        
+            navigate("/questions/2?token=" + user.token);
+          }}
+        >
+          Continuar
+        </PrimaryButton>
       </TopFixed>
       <Container>
-        <div style={{ marginTop: "100px" }}>
+        <div style={{ marginTop: "100px", maxWidth: "800px" }}>
           {categories.length == 0 ? (
             <div>Loading...</div>
           ) : (
@@ -69,7 +73,10 @@ function Questions2({ user }) {
                 question.setTotalAnswers = setTotalAnswers;
                 question.totalAnswers = totalAnswers;
                 num++;
-                return <Reactive data={question} key={question.id} />;
+
+                return (
+                  <Reactive data={question} key={question.id} index={num} />
+                );
               });
             })
           )}

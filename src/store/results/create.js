@@ -19,6 +19,6 @@ export default async function createResult(
     },
     data: { value, token },
   };
-
+  console.log(options);
   return tryRequest(options);
 }

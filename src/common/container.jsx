@@ -8,4 +8,5 @@ export const Container = styled.div`
   margin: 1rem;
   font-size: large;
   gap: 1rem;
+  
 `;

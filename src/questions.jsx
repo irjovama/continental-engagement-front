@@ -7,6 +7,7 @@ import { TopFixed } from "./common/top-fixed";
 import showCategoriesByUser from "./store/categories/show-by-user";
 import { useNavigate } from "react-router-dom";
 import updateUser from "./store/users/update";
+import ProgressBar from "./common/progressBar";
 
 function Questions({ user }) {
   const [categories, setCategories] = useState([]);
@@ -26,9 +27,14 @@ function Questions({ user }) {
         .reduce((accumulator, currentArray) => {
           return accumulator.concat(currentArray);
         }, []);
-      setTotalQuestions(questions.length);
-      const answers = questions.filter((q) => q.results.length > 0);
-      setTotalAnswers(answers.length);
+      setTotalQuestions(questions.length - 5);
+      const answers = questions.filter((q) => {
+        const multiple =
+          q?.options.length > 0 &&
+          q.options[0].group.split("-")[0] == "multiple";
+        return !multiple && q.results.length > 0;
+      });
+      setTotalAnswers(answers.length + 1);
     });
   }, []);
   const progressValue =
@@ -42,23 +48,17 @@ function Questions({ user }) {
   return (
     <>
       <TopFixed>
-        <div id="top">
-          <div>
-            <progress id="file" max="100" value={progressValue} />
-          </div>
-          <PrimaryButton
-            disabled={progressValue < 70}
-            onClick={() => {
-              navigate("/questions2?token=" + user.token);
-            }}
-          >
-            Continuar
-          </PrimaryButton>
-        </div>
-        <div>
-          En una escala del 1 al 7, donde 1 es totalmente en desacuerdo y 7 es
-          totalmente de acuerdo, marque las siguientes afirmaciones
-        </div>
+        <ProgressBar totalItems={totalQuestions} answers={totalAnswers} />
+        <PrimaryButton
+          disabled={totalAnswers < 22}
+          onClick={(e) => {
+            e.target.disabled = true;
+
+            navigate("/questions/2?token=" + user.token);
+          }}
+        >
+          Continuar
+        </PrimaryButton>
       </TopFixed>
       <Container>
         <div style={{ marginTop: "100px" }}>
@@ -72,8 +72,11 @@ function Questions({ user }) {
                 question.token = user.token;
                 question.setTotalAnswers = setTotalAnswers;
                 question.totalAnswers = totalAnswers;
+                
                 num++;
-                return <Reactive data={question} key={question.id} />;
+                return (
+                  <Reactive data={question} key={question.id} index={num} />
+                );
               });
             })
           )}

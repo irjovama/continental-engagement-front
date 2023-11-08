@@ -8,9 +8,10 @@ import {
   CircleButton,
   TextArea,
   TextButton,
+  RadioButton,
 } from "./questions";
 
-export default function ScaleReactive({ data, index }) {
+export default function YesNoReactive({ data, index }) {
   const [selected, setSelected] = useState(
     data.results.length > 0 && data.results[0].value
   );
@@ -49,23 +50,26 @@ export default function ScaleReactive({ data, index }) {
     <QuestionContainer index={index}>
       <span>{data.content}</span>
       <ButtonContainer>
-        {data.options.length > 0 &&
-          data.options.map((o) => {
-            return (
-              <CircleButton
-                disabled={pending}
-                key={o.id}
-                style={
-                  selected == o.value
-                    ? { background: "#7A00C6", color: "white" }
-                    : {}
-                }
-                onClick={(e) => setSelected(o.value)}
-              >
-                {o.label}
-              </CircleButton>
-            );
-          })}
+        {data.options.map((o, i) => {
+          return (
+            <div key={i}>
+              <div>
+                <RadioButton
+                  disabled={pending}
+                  style={
+                    selected == o.value
+                      ? { background: "#7A00C6", color: "white" }
+                      : {}
+                  }
+                  onClick={(e) => {
+                    setSelected(o.value);
+                  }}
+                ></RadioButton>
+              </div>
+              <div>{o.label}</div>
+            </div>
+          );
+        })}
       </ButtonContainer>
     </QuestionContainer>
   );
