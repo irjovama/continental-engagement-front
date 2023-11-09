@@ -43,14 +43,14 @@ const Container = styled.div`
 `;
 const Title = styled.div`
   /* font-family: "Neue Plak"; */
-  font-size: 36px;
+  font-size: 34px;
   font-weight: 600;
   line-height: 43px;
   letter-spacing: 0em;
   text-align: center;
   color: #7a00c6;
   & div {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 600;
     line-height: 28.8px;
   }
