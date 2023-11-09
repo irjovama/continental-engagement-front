@@ -12,6 +12,7 @@ import ReciboPage from "./recibo";
 import HomePage from "./home";
 import Questions0 from "./questions0";
 import ExportPage from "./reports/export";
+import MailerPage from "./mail-panel";
 
 function App() {
   const [token, setToken] = useState("");
@@ -52,6 +53,7 @@ function App() {
             <Route path={"finish"} element={<FinishPage user={user} />} />
             <Route path={"recibo"} element={<ReciboPage user={user} />} />
             <Route path={"export"} element={<ExportPage user={user} />} />
+            <Route path={"mailer"} element={<MailerPage user={user} />} />
             <Route
               path={"administration-panel"}
               element={<AdministrationPanel user={user} />}
