@@ -8,4 +8,9 @@ export const H1 = styled.div`
 export const Content = styled.div`
   margin-top: 100px;
   font-size: large;
+  @media (max-width: 600px) {
+    
+    max-width: 400px;
+    padding: 1rem;
+  }
 `;

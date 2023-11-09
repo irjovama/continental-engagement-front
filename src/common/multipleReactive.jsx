@@ -11,12 +11,24 @@ import {
   RadioButton,
   SquereButton,
 } from "./questions";
+import styled from "styled-components";
+const Container = styled.div`
+  display: inline-block;
+  padding: 20px;
 
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    justify-content: center;
+    align-items: center;
+  }
+`;
 export default function MultipleReactive({ data, index }) {
   return (
-    <div style={{ display: "inline-block", padding: "20px" }}>
+    <Container>
       <CheckButton data={data} />
-    </div>
+    </Container>
   );
 }
 
@@ -27,7 +39,6 @@ function CheckButton({ data }) {
   const [ready, setReady] = useState(false);
   const label = data.content.split("-")[1];
   function toggleSelected() {
-
     setSelected(selected == "on" ? "off" : "on");
   }
   useEffect(() => {
@@ -50,7 +61,6 @@ function CheckButton({ data }) {
     }
   }, [selected]);
   useEffect(() => {
-    
     setReady(true);
   }, []);
   return (

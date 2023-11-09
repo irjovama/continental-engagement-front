@@ -10,6 +10,11 @@ export const QuestionContainer = styled.div`
   padding: 1rem;
   max-width: 800px;
   background-color: ${(props) => (props.index % 2 != 0 ? "#fbfaff" : "")};
+
+  @media (max-width: 600px) {
+    min-width: 400px;
+    max-width: 600px;
+  }
 `;
 export const ButtonContainer = styled.div`
   display: flex;

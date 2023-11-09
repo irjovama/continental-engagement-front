@@ -34,6 +34,10 @@ const Container = styled.div`
   width: 100%;
   gap: 2rem;
   color: #7a00c6;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
 `;
 const Title = styled.div`
   font-family: Neue Plak;

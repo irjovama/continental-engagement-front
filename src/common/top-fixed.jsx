@@ -11,5 +11,8 @@ export const TopFixed = styled.div`
   padding: 1rem;
   gap: 1rem;
 
-  
+  @media (max-width: 600px) {
+    flex-direction: column;
+    max-width: 400px;
+  }
 `;
