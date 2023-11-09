@@ -13,7 +13,7 @@ export default function MailerPage() {
     e.target.innerHTML = "Enviando";
 
     sendEmailFunc(u.email, u.token).then((mail) => {
-      console.log(mail);
+
       e.target.disabled = false;
       e.target.innerHTML = "Enviar de nuevo";
     });
