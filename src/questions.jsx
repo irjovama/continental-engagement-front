@@ -54,17 +54,19 @@ function Questions({ user }) {
           text={`Considerando tu experiencia en los últimos 06 meses. En una escala del
           1 al 7, donde 1 es totalmente en desacuerdo y 7 es totalmente de
           acuerdo, marque las siguientes afirmaciones:`}
-        />
-        <PrimaryButton
-          disabled={totalAnswers < 22}
-          onClick={(e) => {
-            e.target.disabled = true;
+          button={
+            <PrimaryButton
+              disabled={totalAnswers < 22}
+              onClick={(e) => {
+                e.target.disabled = true;
 
-            navigate("/questions/2?token=" + user.token);
-          }}
-        >
-          Continuar
-        </PrimaryButton>
+                navigate("/questions/2?token=" + user.token);
+              }}
+            >
+              Continuar
+            </PrimaryButton>
+          }
+        />
       </TopFixed>
       <Container>
         <div style={{ marginTop: "100px" }}>

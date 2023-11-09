@@ -21,26 +21,28 @@ const ArrowContainer = styled.div`
   display: absolute;
   top: 0xp;
   left: 0px;
-  width: 100%;
+  width: 100vw;
   height: 90vh;
   z-index: -1;
 `;
 const Container = styled.div`
+  /* font-family: "Neue Plak"; */
   position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 90vh;
-  width: 100%;
+  width: 100vw;
   gap: 2rem;
   color: #7a00c6;
 
   @media (max-width: 600px) {
     flex-direction: column;
+    margin-top: 100px;
   }
 `;
 const Title = styled.div`
-  font-family: Neue Plak;
+  /* font-family: "Neue Plak"; */
   font-size: 36px;
   font-weight: 600;
   line-height: 43px;
@@ -57,10 +59,14 @@ const LeftPanel = styled.div`
   display: flex;
 `;
 const RightPanel = styled.div`
-  width: 400px;
+  width: 50vw;
   display: flex;
-  align-items: start;
+  align-items: center;
   flex-direction: column;
+
+  @media (max-width: 600px) {
+    width: 70vw;
+  }
 `;
 export default function HomePage({ user }) {
   const [token, setToken] = useState("");
@@ -68,7 +74,7 @@ export default function HomePage({ user }) {
     setToken(user?.token && user.token);
   }, [user?.token]);
   return (
-    <div>
+    <>
       <Container>
         <LeftPanel>
           <Title>
@@ -104,6 +110,6 @@ export default function HomePage({ user }) {
       <ArrowContainer>
         <TopArrows src={Arrows} /> <BottomArrows src={Arrows} />
       </ArrowContainer>
-    </div>
+    </>
   );
 }

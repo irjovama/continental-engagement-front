@@ -14,14 +14,16 @@ import {
 import styled from "styled-components";
 const Container = styled.div`
   display: inline-block;
-  padding: 20px;
+  width: 200px;
+  margin:  1rem;
+
 
   @media (max-width: 600px) {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     max-width: 400px;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
   }
 `;
 export default function MultipleReactive({ data, index }) {
@@ -70,9 +72,11 @@ function CheckButton({ data }) {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+
+        width: "200px"
       }}
     >
-      <SquereButton
+      <RadioButton
         disabled={pending}
         style={
           selected && selected != "off"
@@ -82,7 +86,7 @@ function CheckButton({ data }) {
         onClick={(e) => {
           toggleSelected();
         }}
-      ></SquereButton>
+      ></RadioButton>
       <div>{label}</div>
       {label.toLowerCase().includes("otro") && (
         <input
