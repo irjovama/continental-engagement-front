@@ -76,6 +76,7 @@ export default function HomePage({ user }) {
   return (
     <>
       <Container>
+       
         <LeftPanel>
           <Title>
             <div>Encuesta de</div>

@@ -18,10 +18,12 @@ function App() {
   const [token, setToken] = useState("");
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-
+  const [route, setRoute] = useState("");
   useEffect(() => {
     const params = new URLSearchParams(window.location.href.split("?")[1]);
     const newToken = params.get("token");
+    const newRoute = params.get("route");
+    setRoute(newRoute);
     setToken(newToken);
   }, []);
 
@@ -37,6 +39,13 @@ function App() {
         });
     }
   }, [token]);
+  const routes = {
+    null: <HomePage user={user} />,
+    "administration-panel": <AdministrationPanel user={user} />,
+    recibo: <ReciboPage user={user} />,
+    export: <ExportPage user={user} />,
+    mailer: <MailerPage user={user} />,
+  };
   return (
     <>
       {error ? (
@@ -46,18 +55,11 @@ function App() {
       ) : user ? (
         <Router>
           <Routes>
-            <Route path="/" element={<HomePage user={user} />} />
+            <Route path="/" element={routes[route]} />
             <Route path="questions/0" element={<Questions0 user={user} />} />
             <Route path={"questions/1"} element={<Questions user={user} />} />
             <Route path={"questions/2"} element={<Questions2 user={user} />} />
             <Route path={"finish"} element={<FinishPage user={user} />} />
-            <Route path={"recibo"} element={<ReciboPage user={user} />} />
-            <Route path={"export"} element={<ExportPage user={user} />} />
-            <Route path={"mailer"} element={<MailerPage user={user} />} />
-            <Route
-              path={"administration-panel"}
-              element={<AdministrationPanel user={user} />}
-            />
           </Routes>
         </Router>
       ) : (
