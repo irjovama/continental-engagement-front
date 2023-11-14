@@ -11,6 +11,7 @@ import { BottomFixed, Pagination, TopFixed } from "./common/top-fixed";
 import styled from "styled-components";
 import RadioReactive from "./common/radioReactive";
 import ProgressBar from "./common/progressBar";
+import Loader from "./common/loader";
 
 function Questions0({ user }) {
   const [categories, setCategories] = useState([]);
@@ -78,9 +79,7 @@ function Questions0({ user }) {
         <ProgressBar
           totalItems={totalQuestions}
           answers={totalAnswers}
-          button={
-            <PrimaryButton>Guardar</PrimaryButton>
-          }
+          button={<PrimaryButton>Guardar</PrimaryButton>}
         />
       </TopFixed>
       <Content>
@@ -101,7 +100,9 @@ function Questions0({ user }) {
 
             <div>
               {categories.length == 0 ? (
-                <div>Loading...</div>
+                <div>
+                  <Loader />
+                </div>
               ) : (
                 categories.map((category) => {
                   return category.questions.map((question) => {
@@ -128,7 +129,7 @@ function Questions0({ user }) {
         </div>
         <div>
           <PrimaryButton
-           disabled={totalAnswers < 3}
+            disabled={totalAnswers < 3}
             onClick={(e) => {
               e.target.disabled = true;
 

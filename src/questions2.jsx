@@ -8,6 +8,7 @@ import showCategoriesByUser from "./store/categories/show-by-user";
 import { useNavigate } from "react-router-dom";
 import updateUser from "./store/users/update";
 import ProgressBar from "./common/progressBar";
+import Loader from "./common/loader";
 
 function Questions2({ user }) {
   const [categories, setCategories] = useState([]);
@@ -61,7 +62,7 @@ function Questions2({ user }) {
           }}
         >
           {categories.length == 0 ? (
-            <div>Loading...</div>
+            <div><Loader /></div>
           ) : (
             categories.map((category) => {
               return category.questions.map((question) => {

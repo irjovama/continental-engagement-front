@@ -13,6 +13,7 @@ import HomePage from "./home";
 import Questions0 from "./questions0";
 import ExportPage from "./reports/export";
 import MailerPage from "./mail-panel";
+import Loader from "./common/loader";
 
 function App() {
   const [token, setToken] = useState("");
@@ -63,7 +64,7 @@ function App() {
           </Routes>
         </Router>
       ) : (
-        "Loading..."
+        <Loader />
       )}
     </>
   );
