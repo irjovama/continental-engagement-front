@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import createResult from "../store/results/create";
 import updateResult from "../store/results/update";
-import { QuestionContainer, ButtonContainer, RadioButton } from "./questions";
+import { QuestionContainer, ButtonContainer, RadioButton, ButtonContainerCol } from "./questions";
 import ScaleReactive from "./scaleReactive";
 import updateUser from "../store/users/update";
 
@@ -35,17 +35,12 @@ export default function RadioReactive({
   return (
     <QuestionContainer>
       <>{data.content}</>
-      <ButtonContainer>
+      <ButtonContainerCol>
         {data.options.map((o) => {
           return (
             <div
               key={o.id}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+              
             >
               <div>
                 <RadioButton
@@ -60,11 +55,13 @@ export default function RadioReactive({
                   }}
                 ></RadioButton>
               </div>
-              <div>{o.label}</div>
+              <div>
+                <strong>{o.label}</strong>
+              </div>
             </div>
           );
         })}
-      </ButtonContainer>
+      </ButtonContainerCol>
     </QuestionContainer>
   );
 }

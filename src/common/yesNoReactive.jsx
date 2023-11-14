@@ -9,6 +9,7 @@ import {
   TextArea,
   TextButton,
   RadioButton,
+  ButtonContainerCol,
 } from "./questions";
 
 export default function YesNoReactive({ data, index }) {
@@ -49,28 +50,27 @@ export default function YesNoReactive({ data, index }) {
   return (
     <QuestionContainer index={index}>
       <span>{data.content}</span>
-      <ButtonContainer>
+      <ButtonContainerCol>
         {data.options.map((o, i) => {
           return (
             <div key={i}>
-              <div>
-                <RadioButton
-                  disabled={pending}
-                  style={
-                    selected == o.value
-                      ? { background: "#7A00C6", color: "white" }
-                      : {}
-                  }
-                  onClick={(e) => {
-                    setSelected(o.value);
-                  }}
-                ></RadioButton>
-              </div>
-              <div>{o.label}</div>
+              <RadioButton
+                disabled={pending}
+                style={
+                  selected == o.value
+                    ? { background: "#7A00C6", color: "white" }
+                    : {}
+                }
+                onClick={(e) => {
+                  setSelected(o.value);
+                }}
+              ></RadioButton>
+
+              <strong>{o.label}</strong>
             </div>
           );
         })}
-      </ButtonContainer>
+      </ButtonContainerCol>
     </QuestionContainer>
   );
 }

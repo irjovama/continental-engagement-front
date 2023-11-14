@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { PrimaryButton } from "./common/buttons";
+import { PrimaryButton, SecondaryButton } from "./common/buttons";
 import { Container } from "./common/container";
 import Reactive from "./common/reactive";
-import { TopFixed } from "./common/top-fixed";
+import { BottomFixed, Pagination, TopFixed } from "./common/top-fixed";
 import showCategoriesByUser from "./store/categories/show-by-user";
 import { useNavigate } from "react-router-dom";
 import updateUser from "./store/users/update";
@@ -54,22 +54,11 @@ function Questions({ user }) {
           text={`Considerando tu experiencia en los últimos 06 meses. En una escala del
           1 al 7, donde 1 es totalmente en desacuerdo y 7 es totalmente de
           acuerdo, marque las siguientes afirmaciones:`}
-          button={
-            <PrimaryButton
-              disabled={totalAnswers < 22}
-              onClick={(e) => {
-                e.target.disabled = true;
-
-                navigate("/questions/2?token=" + user.token);
-              }}
-            >
-              Continuar
-            </PrimaryButton>
-          }
+          button={<PrimaryButton>Guardar</PrimaryButton>}
         />
       </TopFixed>
       <Container>
-        <div style={{ marginTop: "100px" }}>
+        <div style={{ marginTop: "200px", marginBottom: "200px" }}>
           {categories.length == 0 ? (
             <div>Loading...</div>
           ) : (
@@ -90,6 +79,34 @@ function Questions({ user }) {
           )}
         </div>
       </Container>
+      <BottomFixed>
+        <div>
+          <SecondaryButton
+            onClick={(e) => {
+              e.target.disabled = true;
+
+              navigate("/questions/0?token=" + user.token);
+            }}
+          >
+            Regresar
+          </SecondaryButton>
+        </div>
+        <div>
+          <Pagination page={2} />
+        </div>
+        <div>
+          <PrimaryButton
+            disabled={totalAnswers < 22}
+            onClick={(e) => {
+              e.target.disabled = true;
+
+              navigate("/questions/2?token=" + user.token);
+            }}
+          >
+            Continuar
+          </PrimaryButton>
+        </div>
+      </BottomFixed>
     </>
   );
 }

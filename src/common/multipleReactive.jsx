@@ -13,10 +13,11 @@ import {
 } from "./questions";
 import styled from "styled-components";
 const Container = styled.div`
-  display: inline-block;
-  width: 200px;
-  margin:  1rem;
-
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem;
 
   @media (max-width: 600px) {
     /* display: flex;
@@ -25,6 +26,11 @@ const Container = styled.div`
     justify-content: center;
     align-items: center; */
   }
+`;
+
+const StyledInput = styled.input`
+  border-radius: 21px;
+  border: 1px solid #d9d9d9;
 `;
 export default function MultipleReactive({ data, index }) {
   return (
@@ -69,11 +75,9 @@ function CheckButton({ data }) {
     <div
       style={{
         display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-
-        width: "200px"
+        flexDirection: "row",
+        width: "100%",
+        gap: "10px",
       }}
     >
       <RadioButton
@@ -87,9 +91,11 @@ function CheckButton({ data }) {
           toggleSelected();
         }}
       ></RadioButton>
-      <div>{label}</div>
+     
+        <strong>{label}</strong>
+     
       {label.toLowerCase().includes("otro") && (
-        <input
+        <StyledInput
           disabled={selected == "off"}
           placeholder="Especifica"
           defaultValue={selected.split("-")[1]}

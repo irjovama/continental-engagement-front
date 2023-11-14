@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import updateUser from "./store/users/update";
 import Reactive from "./common/reactive";
 import showCategoriesByUser from "./store/categories/show-by-user";
-import { TopFixed } from "./common/top-fixed";
+import { BottomFixed, Pagination, TopFixed } from "./common/top-fixed";
 import styled from "styled-components";
 import RadioReactive from "./common/radioReactive";
 import ProgressBar from "./common/progressBar";
@@ -75,54 +75,70 @@ function Questions0({ user }) {
   return (
     <Container>
       <TopFixed>
-        <ProgressBar totalItems={totalQuestions} answers={totalAnswers} />
-        <PrimaryButton
-          disabled={totalAnswers < 3}
-          onClick={(e) => {
-            e.target.disabled = true;
-
-            navigate("/questions/1?token=" + token);
-          }}
-        >
-          Continuar
-        </PrimaryButton>
+        <ProgressBar
+          totalItems={totalQuestions}
+          answers={totalAnswers}
+          button={
+            <PrimaryButton>Guardar</PrimaryButton>
+          }
+        />
       </TopFixed>
       <Content>
-        <Container>
-          {user?.id && (
-            <RadioReactive
-              setTotalAnswers={setTotalAnswers}
-              totalAnswers={totalAnswers}
-              modalityAnswer={modalityAnswer}
-              user={user}
-              data={{
-                content: "¿Cuál es tu modalidad de trabajo?",
-                options: modalities,
-              }}
-            />
-          )}
-
-          <div>
-            {categories.length == 0 ? (
-              <div>Loading...</div>
-            ) : (
-              categories.map((category) => {
-                return category.questions.map((question) => {
-                  question.index = num;
-                  question.categoryId = category.id;
-                  question.token = user.token;
-                  question.setTotalAnswers = setTotalAnswers;
-                  question.totalAnswers = totalAnswers;
-                  num++;
-                  return (
-                    <Reactive data={question} key={question.id} index={num} />
-                  );
-                });
-              })
+        <div style={{ marginTop: "100px", marginBottom: "200px" }}>
+          <Container>
+            {user?.id && (
+              <RadioReactive
+                setTotalAnswers={setTotalAnswers}
+                totalAnswers={totalAnswers}
+                modalityAnswer={modalityAnswer}
+                user={user}
+                data={{
+                  content: "¿Cuál es tu modalidad de trabajo?",
+                  options: modalities,
+                }}
+              />
             )}
-          </div>
-        </Container>
+
+            <div>
+              {categories.length == 0 ? (
+                <div>Loading...</div>
+              ) : (
+                categories.map((category) => {
+                  return category.questions.map((question) => {
+                    question.index = num;
+                    question.categoryId = category.id;
+                    question.token = user.token;
+                    question.setTotalAnswers = setTotalAnswers;
+                    question.totalAnswers = totalAnswers;
+                    num++;
+                    return (
+                      <Reactive data={question} key={question.id} index={num} />
+                    );
+                  });
+                })
+              )}
+            </div>
+          </Container>
+        </div>
       </Content>
+      <BottomFixed>
+        <div>{""}</div>
+        <div>
+          <Pagination page={1} />
+        </div>
+        <div>
+          <PrimaryButton
+           disabled={totalAnswers < 3}
+            onClick={(e) => {
+              e.target.disabled = true;
+
+              navigate("/questions/1?token=" + token);
+            }}
+          >
+            Continuar
+          </PrimaryButton>
+        </div>
+      </BottomFixed>
     </Container>
   );
 }

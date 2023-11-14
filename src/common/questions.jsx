@@ -3,12 +3,11 @@
 import styled from "styled-components";
 
 export const QuestionContainer = styled.div`
-
-font-size: 18px;
-font-weight: 400;
-line-height: 23px;
-letter-spacing: 0em;
-text-align: left;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 23px;
+  letter-spacing: 0em;
+  text-align: left;
 
   display: flex;
   flex-direction: column;
@@ -24,15 +23,34 @@ text-align: left;
     font-size: 17px;
   }
 `;
+
+export const ButtonContainerCol = styled.div`
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  width: 100%;
+  gap: 1rem;
+
+  @media (max-width: 400px) {
+    font-size: 17px;
+  }
+
+  & div {
+    display: flex;
+    gap: 10px;
+  }
+`;
 export const ButtonContainer = styled.div`
-
-
-
-font-size: 16px;
-font-weight: 400;
-line-height: 21px;
-letter-spacing: 0em;
-text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: center;
 
   display: flex;
   flex-direction: row;
@@ -47,6 +65,7 @@ text-align: center;
   }
 `;
 export const CircleButton = styled.button`
+  font-weight: bolder;
   border-radius: 100%;
   width: 40px;
   height: 40px;
@@ -59,12 +78,11 @@ export const CircleButton = styled.button`
 `;
 
 export const RadioButton = styled.button`
-
   border-radius: 100%;
   width: 20px;
   height: 20px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   border: 1px solid #d9d9d9;
@@ -89,6 +107,9 @@ export const SquereButton = styled.button`
 export const TextArea = styled.textarea`
   width: 100%;
   height: 100px;
+
+  border-radius: 21px;
+  border: 1px solid #d9d9d9;
 `;
 
 export const TextButton = styled.button`

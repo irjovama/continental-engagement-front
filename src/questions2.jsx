@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { PrimaryButton } from "./common/buttons";
+import { PrimaryButton, SecondaryButton } from "./common/buttons";
 import { Container } from "./common/container";
 import Reactive from "./common/reactive";
-import { TopFixed } from "./common/top-fixed";
+import { BottomFixed, Pagination, TopFixed } from "./common/top-fixed";
 import showCategoriesByUser from "./store/categories/show-by-user";
 import { useNavigate } from "react-router-dom";
 import updateUser from "./store/users/update";
@@ -49,19 +49,17 @@ function Questions2({ user }) {
     <>
       <TopFixed>
         <ProgressBar totalItems={totalQuestions} answers={totalAnswers} />
-        <PrimaryButton
-          disabled={totalAnswers < 25}
-          onClick={(e) => {
-            e.target.disabled = true;
+        <PrimaryButton>Guardar</PrimaryButton>
+      </TopFixed>
 
-            navigate("/questions/2?token=" + user.token);
+      <Container>
+        <div
+          style={{
+            marginTop: "200px",
+            maxWidth: "800px",
+            marginBottom: "200px",
           }}
         >
-          Continuar
-        </PrimaryButton>
-      </TopFixed>
-      <Container>
-        <div style={{ marginTop: "100px", maxWidth: "800px" }}>
           {categories.length == 0 ? (
             <div>Loading...</div>
           ) : (
@@ -82,6 +80,35 @@ function Questions2({ user }) {
           )}
         </div>
       </Container>
+
+      <BottomFixed>
+        <div>
+          <SecondaryButton
+            onClick={(e) => {
+              e.target.disabled = true;
+
+              navigate("/questions/1?token=" + user.token);
+            }}
+          >
+            Regresar
+          </SecondaryButton>
+        </div>
+        <div>
+          <Pagination page={3} />
+        </div>
+        <div>
+          <PrimaryButton
+            disabled={totalAnswers < 25}
+            onClick={(e) => {
+              e.target.disabled = true;
+
+              navigate("/questions/2?token=" + user.token);
+            }}
+          >
+            Continuar
+          </PrimaryButton>
+        </div>
+      </BottomFixed>
     </>
   );
 }
