@@ -18,93 +18,97 @@ export default function ExportPage() {
   }, []);
   return (
     <div>
-      {JSON.stringify(categories && datos && "true")}
-      <button
-        onClick={() => {
-          // Crea un nuevo libro de trabajo (workbook)
-          const workbook = new ExcelJS.Workbook();
+      {categories && datos && (
+        <button
+          onClick={() => {
+            // Crea un nuevo libro de trabajo (workbook)
+            const workbook = new ExcelJS.Workbook();
 
-          const worksheet = workbook.addWorksheet("Respuestas");
+            const worksheet = workbook.addWorksheet("Respuestas");
 
-          const columns = [
-            { header: "Id", key: "id" },
-            { header: "Nombre", key: "name" },
-            { header: "Correo", key: "email" },
-            { header: "Modalidad", key: "modality" },
-            { header: "Terminado", key: "finishedAt" },
-            { header: "Unidad de negocio", key: "unidadDeNegocio" },
-            { header: "Area de trabajo", key: "areaDeTrabajo" },
-            { header: "Sub area de trabajo", key: "subAreaDeTrabajo" },
-            { header: "Ubicación fisica", key: "ubicacionFisica" },
-            { header: "Local", key: "local" },
-            { header: "Naturaleza del puesto", key: "naturalezaDelPuesto" },
-            {
-              header: "Grupo ocupacional nivel 2",
-              key: "grupoOcupacionalNivel2",
-            },
-            { header: "Años en la organización", key: "anosEnLaOrganizacion" },
-            { header: "Edad", key: "edad" },
-            { header: "Generación", key: "generacion" },
-          ];
+            const columns = [
+              { header: "Id", key: "id" },
+              { header: "Nombre", key: "name" },
+              { header: "Correo", key: "email" },
+              { header: "Modalidad", key: "modality" },
+              { header: "Terminado", key: "finishedAt" },
+              { header: "Unidad de negocio", key: "unidadDeNegocio" },
+              { header: "Area de trabajo", key: "areaDeTrabajo" },
+              { header: "Sub area de trabajo", key: "subAreaDeTrabajo" },
+              { header: "Ubicación fisica", key: "ubicacionFisica" },
+              { header: "Local", key: "local" },
+              { header: "Naturaleza del puesto", key: "naturalezaDelPuesto" },
+              {
+                header: "Grupo ocupacional nivel 2",
+                key: "grupoOcupacionalNivel2",
+              },
+              {
+                header: "Años en la organización",
+                key: "anosEnLaOrganizacion",
+              },
+              { header: "Edad", key: "edad" },
+              { header: "Generación", key: "generacion" },
+            ];
 
-          let questions = [];
-          for (let category of categories) {
-            questions = [...questions, ...category.questions];
-          }
-          worksheet.columns = [
-            ...columns,
-            ...questions.map((q) => {
-              return { header: q.content, key: q.id };
-            }),
-          ];
-          // const datos = [
-          //     { Nombre: 'John', Edad: 30, Results: [1, 2, 3, 4] },
-          //     { Nombre: 'Jane', Edad: 28, Results: [2, 3, 4, 5] },
-          //     { Nombre: 'Bob', Edad: 35, Results: [3, 4, 5, 6] },
-          //   ];
-
-          datos.forEach((item) => {
-            const obj = {};
-            for (let result of item.results) {
-              if (result?.question && result.question?.id) {
-                const key = result.question.id;
-                const value = result.value;
-
-                obj[key] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0].includes(+value)
-                  ? +value
-                  : value;
-              }
+            let questions = [];
+            for (let category of categories) {
+              questions = [...questions, ...category.questions];
             }
-            const modItem = {
-              ...item,
-              ...obj,
-            };
+            worksheet.columns = [
+              ...columns,
+              ...questions.map((q) => {
+                return { header: q.content, key: q.id };
+              }),
+            ];
+            // const datos = [
+            //     { Nombre: 'John', Edad: 30, Results: [1, 2, 3, 4] },
+            //     { Nombre: 'Jane', Edad: 28, Results: [2, 3, 4, 5] },
+            //     { Nombre: 'Bob', Edad: 35, Results: [3, 4, 5, 6] },
+            //   ];
 
-            worksheet.addRow(modItem);
-          });
+            datos.forEach((item) => {
+              const obj = {};
+              for (let result of item.results) {
+                if (result?.question && result.question?.id) {
+                  const key = result.question.id;
+                  const value = result.value;
 
-          // return;
-          workbook.xlsx.writeBuffer().then((data) => {
-            const blob = new Blob([data], {
-              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                  obj[key] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0].includes(+value)
+                    ? +value
+                    : value;
+                }
+              }
+              const modItem = {
+                ...item,
+                ...obj,
+              };
+
+              worksheet.addRow(modItem);
             });
-            const blobUrl = URL.createObjectURL(blob);
 
-            // Crear un enlace de descarga
-            const a = document.createElement("a");
-            a.href = blobUrl;
-            a.download = "mi-archivo.xlsx";
-            a.textContent = "Descargar Excel";
+            // return;
+            workbook.xlsx.writeBuffer().then((data) => {
+              const blob = new Blob([data], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              });
+              const blobUrl = URL.createObjectURL(blob);
 
-            // Agregar el enlace al documento y hacer clic en él para descargar el archivo
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-          });
-        }}
-      >
-        descargar
-      </button>
+              // Crear un enlace de descarga
+              const a = document.createElement("a");
+              a.href = blobUrl;
+              a.download = "mi-archivo.xlsx";
+              a.textContent = "Descargar Excel";
+
+              // Agregar el enlace al documento y hacer clic en él para descargar el archivo
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+            });
+          }}
+        >
+          descargar
+        </button>
+      )}
     </div>
   );
 }

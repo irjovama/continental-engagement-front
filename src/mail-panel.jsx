@@ -12,44 +12,68 @@ export default function MailerPage() {
     e.target.disabled = true;
     e.target.innerHTML = "Enviando";
 
-    sendEmailFunc(u.email, u.token).then((mail) => {
+    await sendEmailFunc(u.email, u.token);
 
-      e.target.disabled = false;
-      e.target.innerHTML = "Enviar de nuevo";
+    e.target.disabled = false;
+    e.target.innerHTML = "Enviar de nuevo";
+    e.target.classList.remove("pending");
+  }
+
+  async function sleep(ms) {
+    return await new Promise((resolve, reject) => {
+      setTimeout(resolve, ms);
     });
   }
+  async function sendAllMails() {
+    const buttons = document.querySelectorAll(".pending");
+    for (let button of buttons) {
+      const email = button.dataset.email;
+      const token = button.dataset.token;
+      const user = { email, token };
+
+      await sendMail(user, { target: button });
+
+      await sleep(3000);
+    }
+  }
   return (
-    <table border={1}>
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Terminado</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        {users.length > 0 &&
-          users.map((u) => {
-            return (
-              <tr key={u.id}>
-                <td>{u.name}</td>
-                <td>{u.finishedAt}</td>
-                <td>
-                  {u.finishedAt == null && (
-                    <PrimaryButton
-                      onClick={(e) => {
-                        e.target.disabled = true;
-                        sendMail(u, e);
-                      }}
-                    >
-                      Enviar
-                    </PrimaryButton>
-                  )}
-                </td>
-              </tr>
-            );
-          })}
-      </tbody>
-    </table>
+    <>
+      <PrimaryButton onClick={() => sendAllMails()}>Enviar Todos</PrimaryButton>
+      <table border={1}>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Terminado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.length > 0 &&
+            users.map((u) => {
+              return (
+                <tr key={u.id}>
+                  <td>{u.name}</td>
+                  <td>{u.finishedAt}</td>
+                  <td>
+                    {u.finishedAt == null && (
+                      <PrimaryButton
+                        data-token={u.token}
+                        data-email={u.email}
+                        className={"pending"}
+                        onClick={(e) => {
+                          e.target.disabled = true;
+                          sendMail(u, e);
+                        }}
+                      >
+                        Enviar
+                      </PrimaryButton>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+        </tbody>
+      </table>
+    </>
   );
 }
