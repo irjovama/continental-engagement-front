@@ -93,7 +93,7 @@ function CheckButton({ data }) {
         }}
       ></RadioButton>
      
-        <>{label}</>
+        <div style={{fontSize: "15px"}}>{label}</div>
      
       {label.toLowerCase().includes("otro") && (
         <StyledInput
