@@ -73,7 +73,7 @@ function CheckButton({ data }) {
   }, []);
   return (
     <div
-    className={selected != "" ? "" : "pending-question"}
+      className={selected != "" ? "" : "pending-question"}
       style={{
         display: "flex",
         flexDirection: "row",
@@ -92,16 +92,21 @@ function CheckButton({ data }) {
           toggleSelected();
         }}
       ></RadioButton>
-     
-        <div style={{fontSize: "15px"}}>{label}</div>
-     
+
+      <div style={{ fontSize: "15px" }}>{label}</div>
+
       {label.toLowerCase().includes("otro") && (
         <StyledInput
           disabled={selected == "off"}
           placeholder="Especifica"
           defaultValue={selected.split("-")[1]}
           onBlur={(e) => {
-            setSelected("on-" + e.target.value);
+            if (e.target.value == "") {
+              alert("Especifica cual es el otro motivo");
+              e.target.focus();
+            } else {
+              setSelected("on-" + e.target.value);
+            }
           }}
         />
       )}
