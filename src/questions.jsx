@@ -28,6 +28,7 @@ function Questions({ user }) {
         .reduce((accumulator, currentArray) => {
           return accumulator.concat(currentArray);
         }, []);
+
       setTotalQuestions(questions.length - 5);
       const answers = questions.filter((q) => {
         const multiple =
@@ -52,7 +53,7 @@ function Questions({ user }) {
         <ProgressBar
           totalItems={totalQuestions}
           answers={totalAnswers}
-          text={`Considerando tu experiencia en los últimos 06 meses. En una escala del
+          text={`Considerando tu experiencia en los últimos 06 meses, en una escala del
           1 al 7, donde 1 es totalmente en desacuerdo y 7 es totalmente de
           acuerdo, marque las siguientes afirmaciones:`}
           button={<PrimaryButton>Guardar</PrimaryButton>}
@@ -66,18 +67,22 @@ function Questions({ user }) {
             </div>
           ) : (
             categories.map((category) => {
-              return category.questions.map((question) => {
-                question.index = num;
-                question.categoryId = category.id;
-                question.token = user.token;
-                question.setTotalAnswers = setTotalAnswers;
-                question.totalAnswers = totalAnswers;
+              return category.questions
+                .filter((q) => {
+                  return !q.content.includes("año");
+                })
+                .map((question) => {
+                  question.index = num;
+                  question.categoryId = category.id;
+                  question.token = user.token;
+                  question.setTotalAnswers = setTotalAnswers;
+                  question.totalAnswers = totalAnswers;
 
-                num++;
-                return (
-                  <Reactive data={question} key={question.id} index={num} />
-                );
-              });
+                  num++;
+                  return (
+                    <Reactive data={question} key={question.id} index={num} />
+                  );
+                });
             })
           )}
         </div>

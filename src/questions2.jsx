@@ -20,7 +20,9 @@ function Questions2({ user }) {
   useEffect(() => {
     showCategoriesByUser(user.token).then((response) => {
       setCategories(
-        response.data.filter((c) => ["Preguntas de cierre"].includes(c.name))
+        response.data.filter((c) =>
+          ["Preguntas de cierre", "Cultura de Bienestar"].includes(c.name)
+        )
       );
       const questions = response.data
         .map((category) => category.questions)
@@ -67,18 +69,26 @@ function Questions2({ user }) {
             </div>
           ) : (
             categories.map((category) => {
-              return category.questions.map((question) => {
-                question.index = num;
-                question.categoryId = category.id;
-                question.token = user.token;
-                question.setTotalAnswers = setTotalAnswers;
-                question.totalAnswers = totalAnswers;
-                num++;
+              console.log(category.name);
+              return category.questions
+                .filter((q) => {
+                  return (
+                    category.name != "Cultura de Bienestar" ||
+                    q.content.includes("año")
+                  );
+                })
+                .map((question) => {
+                  question.index = num;
+                  question.categoryId = category.id;
+                  question.token = user.token;
+                  question.setTotalAnswers = setTotalAnswers;
+                  question.totalAnswers = totalAnswers;
+                  num++;
 
-                return (
-                  <Reactive data={question} key={question.id} index={num} />
-                );
-              });
+                  return (
+                    <Reactive data={question} key={question.id} index={num} />
+                  );
+                });
             })
           )}
         </div>
