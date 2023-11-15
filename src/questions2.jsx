@@ -18,6 +18,11 @@ function Questions2({ user }) {
   const navigate = useNavigate();
   let num = 1;
   useEffect(() => {
+    if (progressValue >= 100) {
+      updateUser(user.id, { finishedAt: true }).then((s) => {
+        navigate("/finish?token=" + user.token);
+      });
+    }
     showCategoriesByUser(user.token).then((response) => {
       setCategories(
         response.data.filter((c) =>
@@ -41,12 +46,6 @@ function Questions2({ user }) {
   }, []);
   const progressValue =
     totalAnswers && totalQuestions && (totalAnswers / totalQuestions) * 100;
-
-  if (progressValue >= 100) {
-    updateUser(user.id, { finishedAt: true }).then((s) => {
-      navigate("/finish?token=" + user.token);
-    });
-  }
 
   return (
     <>
@@ -131,7 +130,6 @@ function Questions2({ user }) {
                     return;
                   }
                 }
-                console.log(1);
                 if (totalAnswers >= 26) {
                   e.target.disabled = true;
                   navigate("/finish?token=" + user.token);
