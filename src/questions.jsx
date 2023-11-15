@@ -60,7 +60,7 @@ function Questions({ user }) {
         />
       </TopFixed>
       <Container>
-        <div style={{ marginTop: "200px", marginBottom: "200px" }}>
+        <div style={{ marginTop: "250px", marginBottom: "200px" }}>
           {categories.length == 0 ? (
             <div>
               <Loader />
