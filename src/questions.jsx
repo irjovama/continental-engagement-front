@@ -106,7 +106,7 @@ function Questions({ user }) {
           <PrimaryButton
             // disabled={}
             onClick={(e) => {
-              if (totalAnswers >= 23) {
+              if (totalAnswers >= 22) {
                 e.target.disabled = true;
                 navigate("/questions/2?token=" + user.token);
               }
