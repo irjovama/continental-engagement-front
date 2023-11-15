@@ -14,7 +14,7 @@ function Questions2({ user }) {
   const [categories, setCategories] = useState([]);
   const [totalAnswers, setTotalAnswers] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
-  const [globalSelected, setGlobalSelected] = useState();
+  const [globalSelected, setGlobalSelected] = useState([]);
   const navigate = useNavigate();
   let num = 1;
   useEffect(() => {
@@ -69,7 +69,6 @@ function Questions2({ user }) {
             </div>
           ) : (
             categories.map((category) => {
-              console.log(category.name);
               return category.questions
                 .filter((q) => {
                   return (
@@ -86,7 +85,13 @@ function Questions2({ user }) {
                   num++;
 
                   return (
-                    <Reactive data={question} key={question.id} index={num} />
+                    <Reactive
+                      data={question}
+                      key={question.id}
+                      index={num}
+                      globalSelected={globalSelected}
+                      setGlobalSelected={setGlobalSelected}
+                    />
                   );
                 });
             })
@@ -113,13 +118,28 @@ function Questions2({ user }) {
           <PrimaryButton
             // disabled={totalAnswers < 26}
             onClick={(e) => {
-              if (totalAnswers >= 26) {
-                e.target.disabled = true;
-                navigate("/finish?token=" + user.token);
-              }
+              if (globalSelected.length == 0) {
+                alert("Selecciona al menos una opcion");
+              } else {
+                const otros = globalSelected.find((gs) =>
+                  gs.content.includes("otros")
+                );
+                if (otros) {
+                  if (otros?.contestada && otros.contestada) {
+                  } else {
+                    alert("Especifica que otros");
+                    return;
+                  }
+                }
+                console.log(1);
+                if (totalAnswers >= 26) {
+                  e.target.disabled = true;
+                  navigate("/finish?token=" + user.token);
+                }
 
-              const element = document.querySelector(".pending-question");
-              element.scrollIntoView();
+                const element = document.querySelector(".pending-question");
+                if (element) element.scrollIntoView();
+              }
             }}
           >
             Finalizar
