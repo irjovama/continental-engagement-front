@@ -101,12 +101,9 @@ function CheckButton({ data }) {
           placeholder="Especifica"
           defaultValue={selected.split("-")[1]}
           onBlur={(e) => {
-            if (e.target.value == "") {
-              alert("Especifica cual es el otro motivo");
-              e.target.focus();
-            } else {
+           
               setSelected("on-" + e.target.value);
-            }
+            
           }}
         />
       )}
