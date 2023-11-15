@@ -129,11 +129,16 @@ function Questions0({ user }) {
         </div>
         <div>
           <PrimaryButton
-            disabled={totalAnswers < 3}
+            // disabled={totalAnswers < 3}
             onClick={(e) => {
-              e.target.disabled = true;
+             
+              if (totalAnswers >= 3) {
+                e.target.disabled = true;
+                navigate("/questions/1?token=" + user.token);
+              }
 
-              navigate("/questions/1?token=" + token);
+              const element = document.querySelector(".pending-question");
+              element.scrollIntoView();
             }}
           >
             Continuar

@@ -127,7 +127,7 @@ export default function HomePage({ user }) {
               <strong>¡Contamos con tu participación!</strong>
             </p>
             <Link to={"/questions/0?token=" + token}>
-              <PrimaryButton>Continuar</PrimaryButton>
+              <PrimaryButton>Empezar</PrimaryButton>
             </Link>
           </RightPanel>
         </Container>

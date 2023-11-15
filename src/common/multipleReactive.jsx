@@ -73,6 +73,7 @@ function CheckButton({ data }) {
   }, []);
   return (
     <div
+    className={selected != "" ? "" : "pending-question"}
       style={{
         display: "flex",
         flexDirection: "row",
@@ -92,7 +93,7 @@ function CheckButton({ data }) {
         }}
       ></RadioButton>
      
-        <strong>{label}</strong>
+        <>{label}</>
      
       {label.toLowerCase().includes("otro") && (
         <StyledInput

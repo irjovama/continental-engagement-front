@@ -48,7 +48,7 @@ export default function YesNoReactive({ data, index }) {
     setReady(true);
   }, []);
   return (
-    <QuestionContainer index={index}>
+    <QuestionContainer index={index}  className={selected != "" ? "" : "pending-question"}>
       <span>{data.content}</span>
       <ButtonContainerCol>
         {data.options.map((o, i) => {

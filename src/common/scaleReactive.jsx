@@ -46,7 +46,10 @@ export default function ScaleReactive({ data, index }) {
     setReady(true);
   }, []);
   return (
-    <QuestionContainer index={index}>
+    <QuestionContainer
+      index={index}
+      className={selected != "" ? "" : "pending-question"}
+    >
       <span>{data.content}</span>
       <ButtonContainer>
         {data.options.length > 0 &&
@@ -60,7 +63,10 @@ export default function ScaleReactive({ data, index }) {
                     ? { background: "#7A00C6", color: "white" }
                     : {}
                 }
-                onClick={(e) => setSelected(o.value)}
+                onClick={(e) => {
+                  
+                  setSelected(o.value);
+                }}
               >
                 {o.label}
               </CircleButton>

@@ -112,7 +112,7 @@ export default function ProgressBar({ totalItems, answers, text, button }) {
           {button}
         </Container2>
 
-        <div>{text}</div>
+        <div style={{paddingTop: "2rem"}}>{text}</div>
       </Container>
     </>
   );

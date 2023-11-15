@@ -62,7 +62,9 @@ function Questions2({ user }) {
           }}
         >
           {categories.length == 0 ? (
-            <div><Loader /></div>
+            <div>
+              <Loader />
+            </div>
           ) : (
             categories.map((category) => {
               return category.questions.map((question) => {
@@ -99,14 +101,18 @@ function Questions2({ user }) {
         </div>
         <div>
           <PrimaryButton
-            disabled={totalAnswers < 25}
+            // disabled={totalAnswers < 26}
             onClick={(e) => {
-              e.target.disabled = true;
+              if (totalAnswers >= 26) {
+                e.target.disabled = true;
+                navigate("/finish?token=" + user.token);
+              }
 
-              navigate("/questions/2?token=" + user.token);
+              const element = document.querySelector(".pending-question");
+              element.scrollIntoView();
             }}
           >
-            Continuar
+            Finalizar
           </PrimaryButton>
         </div>
       </BottomFixed>

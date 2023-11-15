@@ -11,7 +11,6 @@ import {
 } from "./questions";
 
 export default function TextReactive({ data, index }) {
-
   const [selected, setSelected] = useState(
     data.results.length > 0 && data.results[0].value
   );
@@ -47,7 +46,10 @@ export default function TextReactive({ data, index }) {
     setReady(true);
   }, []);
   return (
-    <QuestionContainer index={index}>
+    <QuestionContainer
+      index={index}
+      className={selected != "" ? "" : "pending-question"}
+    >
       <span>{data.content}</span>
       <ButtonContainer>
         <TextArea
