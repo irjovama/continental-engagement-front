@@ -33,7 +33,7 @@ export default function MailerPage() {
 
       await sendMail(user, { target: button });
 
-      await sleep(3000);
+      await sleep(1000);
     }
   }
   return (
@@ -42,6 +42,7 @@ export default function MailerPage() {
       <table border={1}>
         <thead>
           <tr>
+            <th>id</th>
             <th>Nombre</th>
             <th>Terminado</th>
             <th>Acciones</th>
@@ -49,29 +50,32 @@ export default function MailerPage() {
         </thead>
         <tbody>
           {users.length > 0 &&
-            users.map((u) => {
-              return (
-                <tr key={u.id}>
-                  <td>{u.name}</td>
-                  <td>{u.finishedAt}</td>
-                  <td>
-                    {u.finishedAt == null && (
-                      <PrimaryButton
-                        data-token={u.token}
-                        data-email={u.email}
-                        className={"pending"}
-                        onClick={(e) => {
-                          e.target.disabled = true;
-                          sendMail(u, e);
-                        }}
-                      >
-                        Enviar
-                      </PrimaryButton>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
+            users
+              .filter((u) => u.id > 1)
+              .map((u) => {
+                return (
+                  <tr key={u.id}>
+                    <td>{u.id}</td>
+                    <td>{u.name}</td>
+                    <td>{u.finishedAt}</td>
+                    <td>
+                      {u.finishedAt == null && (
+                        <PrimaryButton
+                          data-token={u.token}
+                          data-email={u.email}
+                          className={"pending"}
+                          onClick={(e) => {
+                            e.target.disabled = true;
+                            sendMail(u, e);
+                          }}
+                        >
+                          Enviar
+                        </PrimaryButton>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
         </tbody>
       </table>
     </>

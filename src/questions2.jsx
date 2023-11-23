@@ -15,14 +15,19 @@ function Questions2({ user }) {
   const [totalAnswers, setTotalAnswers] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [globalSelected, setGlobalSelected] = useState([]);
+
   const navigate = useNavigate();
   let num = 1;
   useEffect(() => {
+    const progressValue =
+      totalAnswers && totalQuestions && (totalAnswers / totalQuestions) * 100;
     if (progressValue >= 100) {
       updateUser(user.id, { finishedAt: true }).then((s) => {
         navigate("/finish?token=" + user.token);
       });
     }
+  }, [totalAnswers]);
+  useEffect(() => {
     showCategoriesByUser(user.token).then((response) => {
       setCategories(
         response.data.filter((c) =>
@@ -44,8 +49,6 @@ function Questions2({ user }) {
       setTotalAnswers(answers.length + 1);
     });
   }, []);
-  const progressValue =
-    totalAnswers && totalQuestions && (totalAnswers / totalQuestions) * 100;
 
   return (
     <>
