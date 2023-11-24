@@ -1,10 +1,10 @@
 import { tryRequest } from "..";
 
-export default async function showUsers() {
+export default async function showUsers({ page = 1, limit = 10000000000000 }) {
   const options = {
     method: "GET",
     url: "https://engagement-continental.vercel.app/users",
-    params: { limit: "100000000000", page: "1", results: "1" },
+    params: { limit, page, results: "1" },
   };
 
   return tryRequest(options);

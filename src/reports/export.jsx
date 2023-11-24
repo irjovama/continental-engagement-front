@@ -4,21 +4,35 @@ import ExcelJS from "exceljs";
 import { exampleData } from "./example";
 import showUsers from "../store/users/show";
 import showCategories from "../store/categories/show";
+import Loader from "../common/loader";
 
 export default function ExportPage() {
   const [datos, setDatos] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [success, setSuccess] = useState(false);
+  async function handleLoad() {
+    let obj = [];
+
+    const r = await showUsers({ page: 1, limit: 100 });
+
+    const totalPages = r.totalPages;
+    for (let page = 1; page <= totalPages; page++) {
+      const users = await showUsers({ page, limit: 100 });
+      obj = [...obj, ...users.data];
+      setDatos(obj);
+    }
+    setSuccess(true);
+  }
   useEffect(() => {
-    showUsers().then((r) => {
-      setDatos(r.data);
-    });
+    handleLoad();
     showCategories().then((r) => {
       setCategories(r.data);
     });
   }, []);
   return (
     <div>
-      {categories && datos && (
+      {!success && <Loader />}
+      {success && (
         <button
           onClick={() => {
             // Crea un nuevo libro de trabajo (workbook)

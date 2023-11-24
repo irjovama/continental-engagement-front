@@ -51,7 +51,7 @@ export default function MailerPage() {
         <tbody>
           {users.length > 0 &&
             users
-              .filter((u) => u.id > 1)
+              .filter((u) => u.id > 2360)
               .map((u) => {
                 return (
                   <tr key={u.id}>
