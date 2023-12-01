@@ -5,8 +5,22 @@ import sendEmailFunc from "./store/mail/sendMail";
 
 export default function MailerPage() {
   const [users, setUsers] = useState([]);
+  const limit = 200;
+  async function getUsers(page = 1) {
+    let obj = [];
+    for (let page = 1; page <= 10; page++) {
+      const u = await showUsers({ page, limit });
+      obj = [...obj, ...u.data];
+      console.log(obj);
+    }
+
+    return obj;
+  }
   useEffect(() => {
-    showUsers().then((users) => setUsers(users.data));
+    getUsers().then((u) => {
+      console.log(u);
+      setUsers(u);
+    });
   }, []);
   async function sendMail(u, e) {
     e.target.disabled = true;
@@ -51,7 +65,7 @@ export default function MailerPage() {
         <tbody>
           {users.length > 0 &&
             users
-              .filter((u) => u.id > 2360)
+              .filter((u) => u.id > 1)
               .map((u) => {
                 return (
                   <tr key={u.id}>

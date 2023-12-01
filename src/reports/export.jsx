@@ -42,6 +42,7 @@ export default function ExportPage() {
 
             const columns = [
               { header: "Id", key: "id" },
+              { header: "Token", key: "token" },
               { header: "Nombre", key: "name" },
               { header: "Correo", key: "email" },
               { header: "Modalidad", key: "modality" },
